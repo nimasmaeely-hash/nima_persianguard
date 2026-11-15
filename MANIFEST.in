@@ -1,0 +1,3 @@
+include LICENSE README.md README_PUBLISH_FA.md pyproject.toml
+recursive-include docs *.txt
+recursive-include tests *.py

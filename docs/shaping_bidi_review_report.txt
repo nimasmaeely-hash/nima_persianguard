@@ -1,0 +1,41 @@
+گزارش بررسی شکل‌دهی / دوجهته‌سازی / رندر — Persian_Infographic-Nima_PersianGuard.py
+
+توابع مرتبط (خطوط دقیق):
+- validate_source(text)            خط ۵۲  → اعتبارسنجی ورودی
+- shape(text)                      خط ۶۵-۶۷ → تنها نقطه ترکیب reshape + get_display
+- _wrap(text, font, max_width)     خط ۹۴  → شکستن سطر در ترتیب منطقی
+- _measure(shaped, font)           خط ۱۱۱
+- _layout_block(b)                 خط ۱۱۴ → ساخت display_lines (کش نهایی)
+- render()                         خط ۱۴۴ → تنها محل d.text
+
+۱) اعتبارسنجی ورودی (پیش‌شکل‌شده/فرم‌های نمایشی): ✅ بله
+   - validate_source رشته‌های در بازه‌های فرم‌های نمایشی را رد می‌کند:
+     U+FB50..U+FDFF و U+FE70..U+FEFF → ValueError
+   - کاراکترهای کنترلی bidi (LRE/RLE/LRO/RLO/PDF/LRI/RLI/FSI/PDI) را هم رد می‌کند
+     (نشانه چسبیدن متن visual-order به عنوان ورودی).
+   - shape() خودش validate_source را صدا می‌زند؛ add_text/update_text/_layout_block هم
+     مستقیماً validate_source را صدا می‌زنند. ورودی پیش‌شکل‌شده ممکن نیست دوبار شکل بگیرد.
+
+۲) تعداد فراخوانی get_display / reshape:
+   - reshape: دقیقاً یک بار در کل فایل، داخل shape() خط ۶۷.
+   - get_display: یک بار به عنوان import (خط ۱۰) و یک بار استفاده، در همان shape() خط ۶۷.
+   - هر رندر: هر سطر یک بار shape می‌شود در _layout_block (خط ۱۲۰: display_lines)
+     و حاصل کش می‌شود؛ render() فقط همان رشته‌های آماده را با d.text می‌کشد
+     و دوباره shape/get_display نمی‌زند. _wrap در حین اندازه‌گیری فقط شکل‌دهی
+     موقتی برای متریک انجام می‌دهد (خط ۱۰۲)، اما رشته نهایی نمایش همان
+     display_lines است — یعنی هر متن نهایی دقیقاً یک بار reshape + یک بار
+     get_display می‌گیرد (تک‌شکل‌دهی، بدون تجمیع).
+
+۳) آینه‌سازی بوم / مختصات: ✅ هیچ
+   - هیچ flip / mirror / transpose / ImageOps / scale(-1) در کل فایل نیست
+     (تنها تطابق، علامت منفی معمول اعداد است).
+   - d.text فقط با anchor جهت‌دار («ra»/«ma»/«la») استفاده می‌شود؛ خود
+     Pillow متن از پیش شکل‌دهی‌شده را دستکاری معکوس نمی‌کند، پس متن دوبار
+     برعکس/برعکس نمی‌شود.
+   - transform تنها نوع مقیاس‌بندی متناسب S/X/Y در build_scene است، بدون انعکاس.
+
+نتیجه درباره «مورد آینه‌ای دوبار چرخیدن»: در این نسخه متن دقیقاً یک بار
+reshape و یک بار get_display می‌شود، هیچ flip بوم/مختصات وجود ندارد و ورودی
+پیش‌شکل‌شده هم رد می‌شود؛ پس مشکل دوبار چرخش/آینه شدن در این فایل برطرف است.
+
+فایل بررسی‌شده: /mnt/data/Persian_Infographic-Nima_PersianGuard.py

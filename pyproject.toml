@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nima-persianguard"
+version = "1.1.0"
+description = "PersianGuard: modular Persian shaping/layout validation and infographic renderer with a single-pass RTL contract."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Nima Esmaili" }]
+keywords = ["persian", "rtl", "bidi", "arabic-reshaper", "infographic", "pillow"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Multimedia :: Graphics",
+  "Topic :: Text Processing :: Linguistic",
+]
+dependencies = ["Pillow>=9.0"]
+
+[project.optional-dependencies]
+rtl = ["arabic-reshaper>=3.0", "python-bidi>=0.4"]
+dev = ["pytest>=7.0", "arabic-reshaper>=3.0", "python-bidi>=0.4"]
+
+[project.scripts]
+nima-persianguard = "nima_persianguard.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nima_persianguard*"]

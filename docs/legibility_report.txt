@@ -1,0 +1,33 @@
+PersianGuard Validation Report
+Generated: 2026-10-23T05:20:38.399644
+
+Artifacts
+---------
+Final PNG: /mnt/data/Persian_Infographic-Nima_PersianGuard.png
+Dimensions: 3000x2000 px  |  Mode: RGB  |  Bytes: 299280
+SHA-256: a62cc6abdf9da692db65affb0fa758578ef84c6629018d635aa05d303c8b2ce5
+Self-test image: /mnt/data/persianguard_pass2_final.png (3000x2000)
+
+Execution
+---------
+Script: /mnt/data/Persian_Infographic-Nima_PersianGuard.py
+Exit status: 0 (success), elapsed ~3.7s
+Unit tests: 2 ran, OK
+Render generations: 3 (2 dry passes + 1 final RTL pass, 3000x2000)
+RTL contract: PASS - get_display called exactly once (31 calls), only on final pass
+Deterministic intermediate hashes: PASS (1091565400, 1091565400)
+Geometry checks: geometry_warnings=1 (bounds_flags=1, overlap_flags=0, spacing_flags=0)
+Ink-review lines: 7  |  Text blocks: 27  |  Font: /usr/share/fonts/truetype/Vazir.ttf
+
+Limitations
+-----------
+1) Automated checks cover geometry only (bounding boxes, overlaps, bounds, spacing),
+   glyph shaping pipeline, and determinism. They cannot judge aesthetic quality,
+   semantic correctness of Persian text, or subtle visual artifacts.
+2) The reported geometry_warning (bounds_flags=1) indicates one element whose
+   computed bounds exceed the intended margins; it was not auto-corrected and
+   should be reviewed visually.
+3) Automated legibility (ink coverage) checks are heuristic proxies for readability.
+   Final confirmation of readability, contrast perception, and RTL correctness
+   requires human visual verification of the rendered PNG.
+4) No OCR or vision-based verification was performed on the output image.
